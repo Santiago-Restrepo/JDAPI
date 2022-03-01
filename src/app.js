@@ -1,7 +1,11 @@
-import express from "express";
-import morgan from "morgan";
-import cors from "cors";
-import TaskRoutes from "./routes/task.routes";
+// import express from "express";
+// import morgan from "morgan";
+// import cors from "cors";
+// import TaskRoutes from "./routes/task.routes";
+const express = require('express')
+const cors = require('cors')
+const morgan = require('morgan')
+const TaskRoutes = require("./routes/task.routes")
 
 const app = express();
 //configure
@@ -21,4 +25,5 @@ app.get("/", (req, res) => {
 
 app.use("/api/tasks", TaskRoutes);
 
-export default app;
+// export default app;
+module.exports = app;

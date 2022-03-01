@@ -1,4 +1,5 @@
-import {Schema, model} from 'mongoose'
+// import {Schema, model} from 'mongoose'
+const {Schema, model} = require("mongoose");
 
 const taskSchema = new Schema({
     title: {
@@ -19,4 +20,5 @@ const taskSchema = new Schema({
     versionKey: false,
     timestamps: true
 });
-export default model('Task', taskSchema);
+// export default model('Task', taskSchema);
+module.exports = model('Task', taskSchema);

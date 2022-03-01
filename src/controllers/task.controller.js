@@ -1,6 +1,7 @@
-import Task from '../models/Task'
+// import Task from '../models/Task'
+const Task = require("../models/Task")
 
-export const findAllTasks = async (req,res) =>{
+const findAllTasks = async (req,res) =>{
     try {
         const filter = req.body || {};
         const tasks = await Task.find(filter)
@@ -12,7 +13,7 @@ export const findAllTasks = async (req,res) =>{
     }
 }
 
-export const createTask = async (req, res) => {
+const createTask = async (req, res) => {
     if (!req.body.title || !req.body.description) {
         res.status(400).json({
             message: 'no empty fields allowed'
@@ -34,7 +35,7 @@ export const createTask = async (req, res) => {
     }
 }
 
-export const findOneTask = async (req, res) => {
+const findOneTask = async (req, res) => {
     try {
         const {id} = req.params;
         const task = await Task.findById(id)
@@ -53,7 +54,7 @@ export const findOneTask = async (req, res) => {
     }
 }
 
-export const deleteTask = async (req, res) => {
+const deleteTask = async (req, res) => {
     try {
         const {id} = req.params;
         const task = await Task.findByIdAndDelete(id) || {}
@@ -73,7 +74,7 @@ export const deleteTask = async (req, res) => {
     }
 }
 
-export const updateTask = async (req, res) => {
+const updateTask = async (req, res) => {
     try {
         const {id} = req.params;
         const filter = req.body || {};
@@ -93,3 +94,5 @@ export const updateTask = async (req, res) => {
         })
     }
 }
+
+module.exports = {createTask, findAllTasks, updateTask, deleteTask, findOneTask}

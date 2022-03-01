@@ -1,5 +1,7 @@
-import app from './app'
-import './database'
+// import app from './app'
+// import './database'
+const app = require("./app");
+require("./database")
 
 
 app.listen(app.get('port'))
