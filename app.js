@@ -5,7 +5,7 @@
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
-const TaskRoutes = require("./routes/task.routes")
+const PurchaseOrderRoutes = require("./routes/purchaseOrder.routes")
 
 const app = express();
 //configure
@@ -20,10 +20,10 @@ app.use(morgan('dev')); //Mostrar las peticiones que van llegando por consola
 
 //routes
 app.get("/", (req, res) => {
-    res.json({ response: "Welcome to the world" });
+    res.json({ response: "Welcome to the jungle" });
 });
 
-app.use("/api/tasks", TaskRoutes);
+app.use("/api/purchaseOrder", PurchaseOrderRoutes);
 
 // export default app;
 module.exports = app;
