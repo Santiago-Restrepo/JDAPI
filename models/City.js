@@ -1,6 +1,6 @@
 const {Schema, model} = require("mongoose");
 
-const assesorSchema = new Schema({
+const citySchema = new Schema({
     name : {
         type: String,
         trim: true,
@@ -8,5 +8,4 @@ const assesorSchema = new Schema({
 }, {
     versionKey: false,
 });
-// export default model('Task', assesorSchema);
-module.exports = model('Assesor', assesorSchema);
+module.exports = model('City', citySchema);

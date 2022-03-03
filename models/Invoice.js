@@ -1,7 +1,7 @@
 // import {Schema, model} from 'mongoose'
 const {Schema, model} = require("mongoose");
 
-const purchaseOrderSchema = new Schema({
+const invoiceSchema = new Schema({
     sequential : {
         unique: true,
         type: Number,
@@ -44,10 +44,7 @@ const purchaseOrderSchema = new Schema({
         type: String,
         trim: true,
     },
-    has_gifts : {
-        type: Boolean,
-        default: false,
-    },
+    city :  {type: Schema.Types.ObjectId, ref: 'City'},
     carrier :  {type: Schema.Types.ObjectId, ref: 'Carrier'},
     shipping_value : {
         type: Number,
@@ -71,4 +68,4 @@ const purchaseOrderSchema = new Schema({
     versionKey: false,
     timestamps: true
 });
-module.exports = model('PurchaseOrders', purchaseOrderSchema);
+module.exports = model('Invoice', invoiceSchema);

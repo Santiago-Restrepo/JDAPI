@@ -1,11 +1,11 @@
-// import express from "express";
-// import morgan from "morgan";
-// import cors from "cors";
-// import TaskRoutes from "./routes/task.routes";
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
-const PurchaseOrderRoutes = require("./routes/purchaseOrder.routes")
+const InvoiceRoutes = require("./routes/invoice.routes")
+const CarrierRoutes = require("./routes/carrier.routes")
+const AssesorRoutes = require("./routes/assesor.routes")
+const CityRoutes = require("./routes/city.routes")
+const PaymentMethodRoutes = require("./routes/paymentMethod.routes")
 
 const app = express();
 //configure
@@ -23,7 +23,11 @@ app.get("/", (req, res) => {
     res.json({ response: "Welcome to the jungle" });
 });
 
-app.use("/api/purchaseOrder", PurchaseOrderRoutes);
+app.use("/api/purchaseOrder", InvoiceRoutes);
+app.use("/api/carrier", CarrierRoutes);
+app.use("/api/assesor", AssesorRoutes);
+app.use("/api/city", CityRoutes);
+app.use("/api/paymentMethod", PaymentMethodRoutes);
 
 // export default app;
 module.exports = app;

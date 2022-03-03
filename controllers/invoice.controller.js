@@ -1,11 +1,11 @@
 // import PurchaseOrder from '../models/PurchaseOrder'
-const PurchaseOrder = require("../models/PurchaseOrder")
+const Invoice = require("../models/Invoice")
 const Assesor = require("../models/Assesor")
 const Client = require("../models/Client")
 const Product = require("../models/Product")
 const { default: mongoose } = require("mongoose")
 
-const createPurchaseOrder = async (req, res) => {
+const createInvoice = async (req, res) => {
     const {
         sequential,
         assesor_id,
@@ -49,7 +49,7 @@ const createPurchaseOrder = async (req, res) => {
             if (!!!savedNewClient) {
                 savedNewClient = await newClient.save();
             }
-            const newPurchaseOrder = new PurchaseOrder({
+            const newInvoice = new Invoice({
                 sequential,
                 assesor: assesor_id,
                 client: savedNewClient.id,
@@ -58,7 +58,7 @@ const createPurchaseOrder = async (req, res) => {
                 complementary_strategy,
                 sell_date,
                 source,
-                invoice_number,
+                invoice_number: '',
                 priority,
                 shipping_restrictions,
                 has_gifts,
@@ -68,8 +68,8 @@ const createPurchaseOrder = async (req, res) => {
                 paymentMethods,
                 gifts: gifts_ids
             });
-            const savedPurchaseOrder = await newPurchaseOrder.save();
-            res.json(savedPurchaseOrder)
+            const savedInvoice = await newInvoice.save();
+            res.json(savedInvoice)
         } catch (error) {
             res.status(500).json({
                 message: error.message || 'something went wrong creating a PurchaseOrder'
@@ -77,56 +77,56 @@ const createPurchaseOrder = async (req, res) => {
         }
     }
 }
-const findPurchaseOrder = async (req,res) =>{
+const findInvoice = async (req,res) =>{
     try {
         const filter = req.body || {};
-        const PurchaseOrders = await PurchaseOrder.find(filter)
-        res.send(PurchaseOrders)
+        const Invoices = await PurchaseOrder.find(filter)
+        res.send(Invoices)
     } catch (error) {
         res.status(500).json({
-            message: error.message || 'something went wrong retrieving the PurchaseOrders'
+            message: error.message || 'something went wrong retrieving the invoices'
         })
     }
 }
-const deletePurchaseOrder = async (req, res) => {
+const deleteInvoice = async (req, res) => {
     try {
         const {id} = req.params;
-        const PurchaseOrder = await PurchaseOrder.findByIdAndDelete(id) || {}
-        if (Object.keys(PurchaseOrder).length === 0) {
+        const deletedInvoice = await PurchaseOrder.findByIdAndDelete(id) || {}
+        if (Object.keys(deletedInvoice).length === 0) {
             res.status(400).json({
-                message: `PurchaseOrder with id ${id} doesn't exist`
+                message: `Invoice with id ${id} doesn't exist`
             }) 
         } else {
             res.json({
-                message: `PurchaseOrder ${PurchaseOrder._id} was deleted succesfully`
+                message: `Invoice ${deletedInvoice._id} was deleted succesfully`
             })
         }
     } catch (error) {
         res.status(500).json({
-        message: error.message || 'something went wrong deleting the PurchaseOrder'
+        message: error.message || 'something went wrong deleting the Invoice'
         })
     }
 }
 
-const updatePurchaseOrder = async (req, res) => {
+const updateInvoice = async (req, res) => {
     try {
         const {id} = req.params;
         const filter = req.body || {};
-        const PurchaseOrder = await PurchaseOrder.findByIdAndUpdate(req.params.id, filter) || {};
-        if (Object.keys(PurchaseOrder).length === 0) {
+        const updatedInvoice = await PurchaseOrder.findByIdAndUpdate(req.params.id, filter) || {};
+        if (Object.keys(updatedInvoice).length === 0) {
             res.status(400).json({
-                message: `PurchaseOrder with id ${id} doesn't exist, nothing updated`
+                message: `Invoice with id ${id} doesn't exist, nothing updated`
             }) 
         } else {
             res.json({
-                message: `PurchaseOrder ${PurchaseOrder._id} was updated succesfully`
+                message: `Invoice ${updatedInvoice._id} was updated succesfully`
             })
         }
     } catch (error) {
         res.status(500).json({
-            message: error.message || 'something went wrong updating the PurchaseOrder'
+            message: error.message || 'something went wrong updating the Invoice'
         })
     }
 }
 
-module.exports = {createPurchaseOrder, findPurchaseOrder, updatePurchaseOrder, deletePurchaseOrder}
+module.exports = {createInvoice, findInvoice, updateInvoice, deleteInvoice}
