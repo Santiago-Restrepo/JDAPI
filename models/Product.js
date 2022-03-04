@@ -1,7 +1,6 @@
 const {Schema, model} = require("mongoose");
 
 const productSchema = new Schema({
-    _id: Schema.Types.ObjectId,
     universal_code : {
         type: String,
         trim: true,
@@ -9,12 +8,21 @@ const productSchema = new Schema({
     sku : {
         type: String,
         trim: true,
+        unique: true
     },
     name : {
         type: String,
         trim: true,
     },
-    value : {
+    price : {
+        type: Number,
+        required: true
+    },
+    promo_price : {
+        type: Number,
+        required: true
+    },
+    diamond : {
         type: Number,
         required: true
     }

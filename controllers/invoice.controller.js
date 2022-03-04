@@ -7,24 +7,18 @@ const { default: mongoose } = require("mongoose")
 
 const createInvoice = async (req, res) => {
     const {
-        sequential,
-        assesor_id,
-        client,
-        close_chanel,
-        pay_confirmed,
-        complementary_strategy,
         sell_date,
-        source,
-        invoice_number,
+        close_chanel,
+        client,
+        assesor_id,
         priority,
-        shipping_restrictions,
-        has_gifts,
-        carrier_id,
-        shipping_value,
         products,
+        shipping_value,
         paymentMethods,
-        gifts_ids
-        
+        carrier_id,
+        shipping_restrictions,
+        gifts_ids,
+        sequential
     } = req.body
     if (!!!client) {
         res.status(400).json({
@@ -40,8 +34,8 @@ const createInvoice = async (req, res) => {
                 email: client.email,
                 address: client.address,
                 sirena_id: client.sirena_id,
-                country: client.country,
-                city: client.city,
+                country: client.country_id,
+                city: client.city_id,
             })
             //Probar si el cliente ya existe
             
@@ -61,7 +55,6 @@ const createInvoice = async (req, res) => {
                 invoice_number: '',
                 priority,
                 shipping_restrictions,
-                has_gifts,
                 carrier: carrier_id,
                 shipping_value,
                 products,

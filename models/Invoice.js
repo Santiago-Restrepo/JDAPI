@@ -2,55 +2,24 @@
 const {Schema, model} = require("mongoose");
 
 const invoiceSchema = new Schema({
-    sequential : {
-        unique: true,
-        type: Number,
-    },
-    assesor: {type: Schema.Types.ObjectId, ref: 'Assesor'},
-    client: { type: Schema.Types.ObjectId, ref: 'Client'},
-    campaign : {
-        type: String,
+    sell_date : {
+        type: Date,
         trim: true,
     },
+    client: { type: Schema.Types.ObjectId, ref: 'Client'},
     close_chanel : {
         type: String,
         trim: true,
     },
-    pay_confirmed : {
-        type: Boolean,
-        default: false
-    },
-    complementary_strategy : {
-        type: String,
-        trim: true,
-    },
-    sell_date : {
-        type: String,
-        trim: true,
-    },
-    source : {
-        type: String,
-        trim: true,
-    },
-    invoice_number : {
-        type: String,
-        trim: true,
-    },
+    assesor: {type: Schema.Types.ObjectId, ref: 'Assesor'},
     priority : {
         type: String,
         trim: true,
     },
-    shipping_restrictions : {
-        type: String,
-        trim: true,
-    },
-    city :  {type: Schema.Types.ObjectId, ref: 'City'},
-    carrier :  {type: Schema.Types.ObjectId, ref: 'Carrier'},
+    products : [{ type: Schema.Types.ObjectId, ref: 'Product' }],
     shipping_value : {
         type: Number,
-        trim: true,
     },
-    products : [{ type: Schema.Types.ObjectId, ref: 'Product' }],
     paymentMethods : [
         { 
             id: {type: Schema.Types.ObjectId, ref: 'PaymentMethod'},
@@ -59,11 +28,45 @@ const invoiceSchema = new Schema({
             },
             voucher: {
                 type: String
+            },
+            pay_confirmed : {
+                type: Boolean,
+                default: false
             }
         }
     ],
-    gifts : [{ type: Schema.Types.ObjectId, ref: 'Product' }]
-
+    carrier :  {type: Schema.Types.ObjectId, ref: 'Carrier'},
+    shipping_restrictions : {
+        type: String,
+        trim: true,
+    },
+    gifts : [{ type: Schema.Types.ObjectId, ref: 'Product' }],
+    campaign : {
+        type: String,
+        trim: true,
+        default: ''
+    },
+    complementary_strategy : {
+        type: String,
+        trim: true,
+        default: ''
+    },
+    source : {
+        type: String,
+        trim: true,
+        default: ''
+    },
+    invoice_number : {
+        unique: true,
+        type: String,
+        trim: true,
+        default: ''
+    },
+    sequential : {
+        unique: true,
+        type: Number,
+    },
+    
 }, {
     versionKey: false,
     timestamps: true

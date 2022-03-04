@@ -1,93 +1,104 @@
 
-const Carrier = require("../models/Carrier")
+const Product = require("../models/Product")
 const { default: mongoose } = require("mongoose")
 
-const createCarrier = async (req, res) => {
+const createProduct = async (req, res) => {
     const {
         name
     } = req.body
     
     try {
         
-        const newCarrier = new Carrier({
+        const newProduct = new Product({
             name 
         });
-        const savedCarrier = await newCarrier.save();
-        res.json(savedCarrier)
+        const savedProduct = await newProduct.save();
+        res.json(savedProduct)
     } catch (error) {
         res.status(500).json({
-            message: error.message || 'something went wrong creating a Carrier'
+            message: error.message || 'something went wrong creating a Product'
         })
     }
 }
-const insertManyCarriers = async (req, res) => {
+const insertManyProducts = async (req, res) => {
     let {
-        carriers
+        products
     } = req.body
-    carriers = carriers.map(carrier => (
-        {
-            name: carrier
+    try {
+        products = req.body.map(product => (
+            {
+                universal_code: product.universal_code,
+                sku: product.sku,
+                name: product.name,
+                price: product.price,
+                promo_price: product.promo_price,
+                diamond: product.diamond,
+            }
+        ))
+        const savedProducts = await Product.insertMany(products)
+        res.json(savedProducts)
+        // res.json(products)
+    } catch (error) {
+        res.status(500).json({
+            message: error.message || 'something went wrong creating a Product'
+        })
+    }
+}
+const findProduct = async (req,res) =>{
+    try {
+        const filter = !!req.query.id ?  req.query.id : '';
+        let products;
+        if (!!filter) {
+            products =  await Product.findById(filter);
+        } else {
+            products =  await Product.find();
         }
-    ))
-    try {
-        const savedCarriers = await Carrier.insertMany(carriers)
-        res.json(savedCarriers)
+        res.send(products || [])
     } catch (error) {
         res.status(500).json({
-            message: error.message || 'something went wrong creating a Carrier'
+            message: error.message || 'something went wrong retrieving the Products'
         })
     }
 }
-const findCarrier = async (req,res) =>{
-    try {
-        const filter = req.body || {};
-        const Carriers = await Carrier.find(filter)
-        res.send(Carriers)
-    } catch (error) {
-        res.status(500).json({
-            message: error.message || 'something went wrong retrieving the Carriers'
-        })
-    }
-}
-const deleteCarrier = async (req, res) => {
+const deleteProduct = async (req, res) => {
     try {
         const {id} = req.params;
-        const deletedCarrier = await Carrier.findByIdAndDelete(id) || {}
-        if (Object.keys(deletedCarrier).length === 0) {
+        const deletedProduct = await Product.findByIdAndDelete(id) || {}
+        if (Object.keys(deletedProduct).length === 0) {
             res.status(400).json({
-                message: `Carrier with id ${id} doesn't exist`
+                message: `Product with id ${id} doesn't exist`
             }) 
         } else {
             res.json({
-                message: `Carrier ${deletedCarrier._id} was deleted succesfully`
+                message: `Product ${deletedProduct._id} was deleted succesfully`
             })
         }
     } catch (error) {
         res.status(500).json({
-        message: error.message || 'something went wrong deleting the Carrier'
+        message: error.message || 'something went wrong deleting the Product'
         })
     }
 }
 
-const updateCarrier = async (req, res) => {
+const updateProduct = async (req, res) => {
     try {
         const {id} = req.params;
         const filter = req.body || {};
-        const updatedCarrier = await Carrier.findByIdAndUpdate(req.params.id, filter) || {};
-        if (Object.keys(updatedCarrier).length === 0) {
+        const updatedProduct = await Product.findByIdAndUpdate(req.params.id, filter) || {};
+        if (Object.keys(updatedProduct).length === 0) {
             res.status(400).json({
-                message: `Carrier with id ${id} doesn't exist, nothing updated`
+                message: `Product with id ${id} doesn't exist, nothing updated`
             }) 
         } else {
             res.json({
-                message: `Carrier ${updatedCarrier._id} was updated succesfully`
+                message: `Product ${updatedProduct._id} was updated succesfully`
             })
         }
     } catch (error) {
         res.status(500).json({
-            message: error.message || 'something went wrong updating the Carrier'
+            message: error.message || 'something went wrong updating the Product'
         })
     }
 }
 
-module.exports = {createCarrier, findCarrier, updateCarrier, deleteCarrier, insertManyCarriers}
+module.exports = {createProduct, findProduct, updateProduct, deleteProduct, insertManyProducts}

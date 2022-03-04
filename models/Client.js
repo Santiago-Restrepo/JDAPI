@@ -1,7 +1,6 @@
 const {Schema, model} = require("mongoose");
 
 const clientSchema = new Schema({
-    // _id: Schema.Types.ObjectId,
     document : {
         unique: true,
         type: String,
@@ -19,6 +18,10 @@ const clientSchema = new Schema({
         type: String,
         trim: true,
     },
+    sirena_id : {
+        type: String,
+        trim: true,
+    },
     email : {
         type: String,
         trim: true,
@@ -27,7 +30,7 @@ const clientSchema = new Schema({
         type: String,
         trim: true,
     },
-    sirena_id : {
+    city : {
         type: String,
         trim: true,
     },
@@ -35,10 +38,6 @@ const clientSchema = new Schema({
         type: String,
         trim: true,
     },
-    city : {
-        type: String,
-        trim: true,
-    }
 }, {
     versionKey: false,
     timestamps: true
