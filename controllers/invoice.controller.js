@@ -39,7 +39,7 @@ const createInvoice = async (req, res) => {
             })
             //Probar si el cliente ya existe
             
-            let [savedNewClient] = await mongoose.model('Client').find({"document": newClient.document});
+            let [savedNewClient] = await Client.find({"document": newClient.document});
             if (!!!savedNewClient) {
                 savedNewClient = await newClient.save();
             }
@@ -71,13 +71,19 @@ const createInvoice = async (req, res) => {
     }
 }
 const findInvoice = async (req,res) =>{
+    
     try {
-        const filter = req.body || {};
-        const Invoices = await PurchaseOrder.find(filter)
-        res.send(Invoices)
+        const filter = !!req.query.id ?  req.query.id : '';
+        let invoices;
+        if (!!filter) {
+            invoices =  await Invoice.findById(filter);
+        } else {
+            invoices =  await Invoice.find();
+        }
+        res.send(invoices || [])
     } catch (error) {
         res.status(500).json({
-            message: error.message || 'something went wrong retrieving the invoices'
+            message: error.message || 'something went wrong retrieving the Invoices'
         })
     }
 }

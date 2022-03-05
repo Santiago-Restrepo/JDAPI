@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
     res.json({ response: "Welcome to the jungle" });
 });
 
-app.use("/api/purchaseOrder", InvoiceRoutes);
+app.use("/api/invoice", InvoiceRoutes);
 app.use("/api/carrier", CarrierRoutes);
 app.use("/api/assesor", AssesorRoutes);
 app.use("/api/city", CityRoutes);

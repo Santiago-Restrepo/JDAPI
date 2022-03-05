@@ -16,7 +16,16 @@ const invoiceSchema = new Schema({
         type: String,
         trim: true,
     },
-    products : [{ type: Schema.Types.ObjectId, ref: 'Product' }],
+    products : [
+        {
+            //Organizar entidad producto dentro de invoice
+            type: Schema.Types.ObjectId, ref: 'Product',
+            finalPrice: Number,
+            quantity: Number
+        }],
+    finalPrice : {
+        type: Number
+    },
     shipping_value : {
         type: Number,
     },
