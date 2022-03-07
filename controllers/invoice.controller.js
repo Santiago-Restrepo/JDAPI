@@ -20,7 +20,6 @@ const createInvoice = async (req, res) => {
         gifts_ids,
         sequential
     } = req.body
-    console.log(client)
     if (!!!client) {
         res.status(400).json({
             message: 'Client required'

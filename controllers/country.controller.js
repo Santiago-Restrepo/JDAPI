@@ -21,24 +21,6 @@ const createCountry = async (req, res) => {
     }
 }
 
-const showCountry = async (req, res) => {
-    const {
-        name
-    } = req.body
-    
-    try {
-        
-        const newCountry = new Country({
-            name 
-        });
-        const savedCountry = await newCountry.save();
-        res.json(savedCountry)
-    } catch (error) {
-        res.status(500).json({
-            message: error.message || 'something went wrong creating a Country'
-        })
-    }
-}
 const insertManyCountries = async (req, res) => {
     let {
         countries
