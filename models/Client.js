@@ -30,14 +30,8 @@ const clientSchema = new Schema({
         type: String,
         trim: true,
     },
-    city : {
-        type: String,
-        trim: true,
-    },
-    country : {
-        type: String,
-        trim: true,
-    },
+    city : {type: Schema.Types.ObjectId, ref: 'City'},
+    country : {type: Schema.Types.ObjectId, ref: 'City'},
 }, {
     versionKey: false,
     timestamps: true

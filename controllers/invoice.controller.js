@@ -20,6 +20,7 @@ const createInvoice = async (req, res) => {
         gifts_ids,
         sequential
     } = req.body
+    console.log(client)
     if (!!!client) {
         res.status(400).json({
             message: 'Client required'
@@ -42,24 +43,33 @@ const createInvoice = async (req, res) => {
             let [savedNewClient] = await Client.find({"document": newClient.document});
             if (!!!savedNewClient) {
                 savedNewClient = await newClient.save();
+            }else{
+                savedNewClient = await Client.findByIdAndUpdate(savedNewClient._id, {
+                    document: client.document,
+                    name: client.name,
+                    cellphone: client.cellphone,
+                    sirena_cellphone: client.sirena_cellphone,
+                    email: client.email,
+                    address: client.address,
+                    sirena_id: client.sirena_id,
+                    country: client.country_id,
+                    city: client.city_id,
+                })
             }
             const newInvoice = new Invoice({
-                sequential,
                 assesor: assesor_id,
                 client: savedNewClient.id,
                 close_chanel,
-                pay_confirmed,
-                complementary_strategy,
                 sell_date,
-                source,
-                invoice_number: '',
                 priority,
                 shipping_restrictions,
                 carrier: carrier_id,
                 shipping_value,
                 products,
                 paymentMethods,
-                gifts: gifts_ids
+                gifts: gifts_ids,
+                invoice_number: sequential,
+                sequential
             });
             const savedInvoice = await newInvoice.save();
             res.json(savedInvoice)

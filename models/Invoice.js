@@ -19,19 +19,24 @@ const invoiceSchema = new Schema({
     products : [
         {
             //Organizar entidad producto dentro de invoice
-            type: Schema.Types.ObjectId, ref: 'Product',
+            id : {
+                type: Schema.Types.ObjectId, 
+                ref: 'Product',
+            },
             finalPrice: Number,
-            quantity: Number
+            quantity: Number,
+            _id: false
         }],
-    finalPrice : {
-        type: Number
-    },
     shipping_value : {
         type: Number,
     },
     paymentMethods : [
         { 
-            id: {type: Schema.Types.ObjectId, ref: 'PaymentMethod'},
+            id: {
+                type: Schema.Types.ObjectId, 
+                ref: 'PaymentMethod', 
+                required: true
+            },
             value: {
                 type: Number
             },
@@ -41,7 +46,8 @@ const invoiceSchema = new Schema({
             pay_confirmed : {
                 type: Boolean,
                 default: false
-            }
+            },
+            _id: false
         }
     ],
     carrier :  {type: Schema.Types.ObjectId, ref: 'Carrier'},
@@ -69,7 +75,6 @@ const invoiceSchema = new Schema({
         unique: true,
         type: String,
         trim: true,
-        default: ''
     },
     sequential : {
         unique: true,
