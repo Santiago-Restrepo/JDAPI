@@ -46,13 +46,11 @@ const insertManyProducts = async (req, res) => {
 }
 const findProduct = async (req,res) =>{
     try {
-        const filter = !!req.query.id ?  req.query.id : '';
-        let products;
-        if (!!filter) {
-            products =  await Product.findById(filter);
-        } else {
-            products =  await Product.find();
-        }
+        const filter = !!req.query.name ? {
+            "name" : req.query.name.toUpperCase()
+        } : {};
+        const products = await Product.find(filter);
+        
         res.send(products || [])
     } catch (error) {
         res.status(500).json({

@@ -40,8 +40,10 @@ const insertManyAssesors = async (req, res) => {
 }
 const findAssesor = async (req,res) =>{
     try {
-        const filter = req.body || {};
-        const assesor = await Assesor.find(filter)
+        const filter = !!req.query.name ? {
+            "name" : req.query.name.toUpperCase()
+        } : {};
+        const assesor = await Assesor.find(filter);
         res.send(assesor)
     } catch (error) {
         res.status(500).json({

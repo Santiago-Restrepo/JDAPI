@@ -39,7 +39,10 @@ const insertManyPaymentMethods = async (req, res) => {
 }
 const findPaymentMethod = async (req,res) =>{
     try {
-        const filter = req.body || {};
+        const filter =  !!req.query.name ? {
+            "name" : req.query.name
+        }
+        : {};
         const paymentMethod = await PaymentMethod.find(filter)
         res.send(paymentMethod)
     } catch (error) {

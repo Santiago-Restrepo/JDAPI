@@ -40,7 +40,10 @@ const insertManyCarriers = async (req, res) => {
 }
 const findCarrier = async (req,res) =>{
     try {
-        const filter = req.body || {};
+        const filter =  !!req.query.name ? {
+            "name" : req.query.name.toUpperCase()
+        }
+        : {};
         const Carriers = await Carrier.find(filter)
         res.send(Carriers)
     } catch (error) {

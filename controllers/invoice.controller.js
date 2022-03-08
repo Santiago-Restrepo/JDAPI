@@ -37,7 +37,7 @@ const createInvoice = async (req, res) => {
                 country: client.country_id,
                 city: client.city_id,
             })
-            //Probar si el cliente ya existe
+            //Check if client exist
             
             let [savedNewClient] = await Client.find({"document": newClient.document});
             if (!!!savedNewClient) {
@@ -55,6 +55,8 @@ const createInvoice = async (req, res) => {
                     city: client.city_id,
                 })
             }
+            
+            
             const newInvoice = new Invoice({
                 assesor: assesor_id,
                 client: savedNewClient.id,

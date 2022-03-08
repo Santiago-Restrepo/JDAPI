@@ -55,7 +55,9 @@ const invoiceSchema = new Schema({
         type: String,
         trim: true,
     },
-    gifts : [{ type: Schema.Types.ObjectId, ref: 'Product' }],
+    gifts : [{
+        id: { type: Schema.Types.ObjectId, ref: 'Product' }
+    }],
     campaign : {
         type: String,
         trim: true,

@@ -41,12 +41,15 @@ const insertManyCities = async (req, res) => {
 }
 const findCity = async (req,res) =>{
     try {
-        const filter = req.body || {};
-        const city = await City.find(filter)
-        res.send(city)
+        const filter =  !!req.query.name ? {
+            "name" : req.query.name
+        }
+        : {};
+        const cities = await City.find(filter)
+        res.send(cities)
     } catch (error) {
         res.status(500).json({
-            message: error.message || 'something went wrong retrieving the City'
+            message: error.message || 'something went wrong retrieving the Country'
         })
     }
 }

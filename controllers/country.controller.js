@@ -40,11 +40,27 @@ const insertManyCountries = async (req, res) => {
         })
     }
 }
+
+
+const toCamelCase = (stringToConvert) =>{
+
+    let stringToArray = stringToConvert.split(' ')
+    stringToArray = stringToArray.map(str => str.toLowerCase());
+    stringToArray = stringToArray.map(str => {
+        return str[0].toUpperCase() + str.slice(1, str.length)
+    }
+    );
+    let stringToReturn = stringToArray.toString().replaceAll(',', ' ')
+    return stringToReturn
+}
 const findCountry = async (req,res) =>{
     try {
         const filter = !!req.query.show ? {
             "show" : req.query.show
-        } : {};
+        } : !!req.query.name ? {
+            "name" : toCamelCase(req.query.name)
+        }
+        : {};
         const countries = await Country.find(filter)
         res.send(countries)
     } catch (error) {
