@@ -95,7 +95,40 @@ const findInvoice = async (req,res) =>{
         if (!!filter) {
             invoices =  await Invoice.findById(filter);
         } else {
-            invoices =  await Invoice.find();
+            invoices =  await Invoice.aggregate([
+                { 
+                    $lookup: { 
+                        from: "clients", 
+                        localField: "client", 
+                        foreignField: "_id", 
+                        as: "client",
+                        pipeline: [
+                            {
+                                $lookup: { 
+                                    from: "cities", 
+                                    localField: "city", 
+                                    foreignField: "_id", 
+                                    as: "city",
+                                } 
+                            },
+                            {
+                                $lookup: { 
+                                    from: "countries", 
+                                    localField: "country", 
+                                    foreignField: "_id", 
+                                    as: "country",
+                                } 
+                            }
+                        ]
+                    } 
+                },
+                { 
+                    $lookup: { from: "assesors", localField: "assesor", foreignField: "_id", as: "assesor" } 
+                },
+                { 
+                    $lookup: { from: "paymentMethods", localField: "paymentMethod.id", foreignField: "_id", as: "paymentMethod.id" } 
+                }
+            ]);
         }
         res.send(invoices || [])
     } catch (error) {
