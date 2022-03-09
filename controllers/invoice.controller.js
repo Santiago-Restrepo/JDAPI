@@ -17,7 +17,10 @@ const createInvoice = async (req, res) => {
         paymentMethods,
         carrier_id,
         shipping_restrictions,
-        gifts_ids,
+        gifts,
+        campaign,
+        complementary_strategy,
+        source,
         sequential
     } = req.body
     if (!!!client) {
@@ -68,7 +71,10 @@ const createInvoice = async (req, res) => {
                 shipping_value,
                 products,
                 paymentMethods,
-                gifts: gifts_ids,
+                gifts,
+                campaign,
+                complementary_strategy,
+                source,
                 invoice_number: sequential,
                 sequential
             });

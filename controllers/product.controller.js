@@ -46,12 +46,21 @@ const insertManyProducts = async (req, res) => {
 }
 const findProduct = async (req,res) =>{
     try {
-        const filter = !!req.query.name ? {
-            "name" : req.query.name.toUpperCase()
-        } : {};
-        const products = await Product.find(filter);
+        let products;
+        if (!!req.query.id) {
+            products = await Product.findById(req.query.id);
+            console.log(products)
+            products ? res.send([products])
+            : res.send([])
+            
+        } else {
+            const filter = !!req.query.name ? {
+                "name" : req.query.name.toUpperCase()
+            } : {};
+            products = await Product.find(filter);
+            res.send(products || [])
+        }
         
-        res.send(products || [])
     } catch (error) {
         res.status(500).json({
             message: error.message || 'something went wrong retrieving the Products'
