@@ -126,7 +126,12 @@ const findInvoice = async (req,res) =>{
                     $lookup: { from: "assesors", localField: "assesor", foreignField: "_id", as: "assesor" } 
                 },
                 { 
-                    $lookup: { from: "paymentMethods", localField: "paymentMethod.id", foreignField: "_id", as: "paymentMethod.id" } 
+                    $lookup: {
+                        from: "paymentmethods", 
+                        localField: "paymentMethods.id", 
+                        foreignField: "_id", 
+                        as: "paymentMethodNames" 
+                    } 
                 }
             ]);
         }
@@ -159,16 +164,29 @@ const deleteInvoice = async (req, res) => {
 
 const updateInvoice = async (req, res) => {
     try {
-        const {id} = req.params;
-        const filter = req.body || {};
-        const updatedInvoice = await PurchaseOrder.findByIdAndUpdate(req.params.id, filter) || {};
+        const filter = !!req.query.paymentMethodId ? {
+            "_id" : req.params.id,
+            "paymentMethods._id" : req.query.paymentMethodId,
+        }
+        : {};
+        const setData = !!req.query.payConfirmed ? { 
+            "paymentMethods.$.pay_confirmed" : req.query.payConfirmed
+        }
+        : {}; 
+        console.log(filter)
+        console.log(setData)
+        const updatedInvoice = await Invoice.updateOne(
+            filter,
+            { $set: setData }
+        )
+
         if (Object.keys(updatedInvoice).length === 0) {
             res.status(400).json({
                 message: `Invoice with id ${id} doesn't exist, nothing updated`
             }) 
         } else {
             res.json({
-                message: `Invoice ${updatedInvoice._id} was updated succesfully`
+                message: `Invoice ${req.params.id} was updated succesfully`
             })
         }
     } catch (error) {

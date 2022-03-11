@@ -47,7 +47,6 @@ const invoiceSchema = new Schema({
                 type: Boolean,
                 default: false
             },
-            _id: false
         }
     ],
     carrier :  {type: Schema.Types.ObjectId, ref: 'Carrier'},
