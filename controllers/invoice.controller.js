@@ -132,8 +132,15 @@ const findInvoice = async (req,res) =>{
                         foreignField: "_id", 
                         as: "paymentMethodNames" 
                     } 
+                },{ 
+                    $lookup: {
+                        from: "products", 
+                        localField: "products.id", 
+                        foreignField: "_id", 
+                        as: "productsInfo" 
+                    } 
                 }
-            ]);
+            ]).limit(10);
         }
         res.send(invoices || [])
     } catch (error) {
@@ -168,13 +175,16 @@ const updateInvoice = async (req, res) => {
             "_id" : req.params.id,
             "paymentMethods._id" : req.query.paymentMethodId,
         }
-        : {};
+        : {
+            "_id" : req.params.id,
+        };
         const setData = !!req.query.payConfirmed ? { 
             "paymentMethods.$.pay_confirmed" : req.query.payConfirmed
         }
-        : {}; 
-        console.log(filter)
-        console.log(setData)
+        : !!req.query.reviewed && !!req.query.invoiceNumber ? { 
+            "reviewed" : req.query.reviewed,
+            "invoice_number" : req.query.invoiceNumber
+        } : {};
         const updatedInvoice = await Invoice.updateOne(
             filter,
             { $set: setData }
@@ -196,4 +206,19 @@ const updateInvoice = async (req, res) => {
     }
 }
 
-module.exports = {createInvoice, findInvoice, updateInvoice, deleteInvoice}
+const updateManyInvoices = async (req, res) => {
+    try {
+
+        const updatedInvoices = await Invoice.updateMany({}, {$set:{"packed": false}})
+        console.log(updatedInvoices)
+        res.json({
+            message: `Invoices updated succesfully`
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: error.message || 'something went wrong updating the Invoice'
+        })
+    }
+}
+
+module.exports = {createInvoice, findInvoice, updateInvoice, updateManyInvoices, deleteInvoice}

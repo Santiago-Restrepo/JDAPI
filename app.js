@@ -10,6 +10,7 @@ const CountryRoutes = require("./routes/country.routes")
 const PaymentMethodRoutes = require("./routes/paymentMethod.routes")
 const ProductRoutes = require("./routes/product.routes")
 const ClientRoutes = require("./routes/client.routes")
+const UserPermissionRoutes = require("./routes/userPermission.routes")
 
 const app = express();
 //configure
@@ -29,7 +30,7 @@ app.get("/", (req, res) => {
     res.json({ response: "Welcome to the jungle" });
 });
 
-app.use("/api/invoice", InvoiceRoutes);
+app.use("/api/invoices", InvoiceRoutes);
 app.use("/api/carrier", CarrierRoutes);
 app.use("/api/assesor", AssesorRoutes);
 app.use("/api/city", CityRoutes);
@@ -37,6 +38,7 @@ app.use("/api/country", CountryRoutes);
 app.use("/api/paymentMethod", PaymentMethodRoutes);
 app.use("/api/product", ProductRoutes);
 app.use("/api/client", ClientRoutes);
+app.use("/api/userPermission", UserPermissionRoutes);
 
 // export default app;
 module.exports = app;

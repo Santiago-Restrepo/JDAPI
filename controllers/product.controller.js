@@ -49,7 +49,6 @@ const findProduct = async (req,res) =>{
         let products;
         if (!!req.query.id) {
             products = await Product.findById(req.query.id);
-            console.log(products)
             products ? res.send([products])
             : res.send([])
             
@@ -60,6 +59,7 @@ const findProduct = async (req,res) =>{
             products = await Product.find(filter);
             res.send(products || [])
         }
+        console.log(products)
         
     } catch (error) {
         res.status(500).json({

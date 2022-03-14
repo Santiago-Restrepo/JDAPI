@@ -82,6 +82,14 @@ const invoiceSchema = new Schema({
         unique: true,
         type: Number,
     },
+    reviewed: {
+        type: Boolean,
+        default: false
+    },
+    packed: {
+        type: Boolean,
+        default: false
+    }
     
 }, {
     versionKey: false,

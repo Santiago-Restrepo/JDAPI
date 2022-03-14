@@ -9,7 +9,10 @@ router.post('/', invoice.createInvoice)
 
 router.get('/', invoice.findInvoice)
 
+router.put('/updateMany', invoice.updateManyInvoices)
+
 router.put('/:id', invoice.updateInvoice)
+
 
 router.delete('/:id', invoice.deleteInvoice)
 
