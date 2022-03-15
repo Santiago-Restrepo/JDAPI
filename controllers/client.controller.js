@@ -45,7 +45,6 @@ const findClient = async (req,res) =>{
         } : {};
         let clientFound = []
         if (!!req.query.document) {
-            console.log(req.query.document)
             clientFound = await Client.find(filter);
         }
         res.send(clientFound)

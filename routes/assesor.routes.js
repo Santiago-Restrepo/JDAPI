@@ -2,18 +2,19 @@
 // import * as taskController from "../controllers/task.controller";
 const assesor = require("../controllers/assesor.controller");
 const {Router} = require("express");
+const { verifyToken, isAdmin, isEmployee, isBilling } = require("../middlewares");
 
 const router = Router();
 
-router.post('/', assesor.createAssesor)
+router.post('/', [verifyToken, isAdmin] , assesor.createAssesor)
 
-router.get('/', assesor.findAssesor)
+router.get('/', [verifyToken, isBilling] , assesor.findAssesor)
 
-router.put('/:id', assesor.updateAssesor)
+router.put('/:id', [verifyToken, isAdmin] , assesor.updateAssesor)
 
-router.delete('/:id', assesor.deleteAssesor)
+router.delete('/:id', [verifyToken, isAdmin] , assesor.deleteAssesor)
 
-router.post('/insertMany', assesor.insertManyAssesors)
+router.post('/insertMany', [verifyToken, isAdmin] , assesor.insertManyAssesors)
 
 
 // export default router;

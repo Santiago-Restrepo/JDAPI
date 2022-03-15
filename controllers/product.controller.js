@@ -59,7 +59,6 @@ const findProduct = async (req,res) =>{
             products = await Product.find(filter);
             res.send(products || [])
         }
-        console.log(products)
         
     } catch (error) {
         res.status(500).json({

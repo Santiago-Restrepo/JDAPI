@@ -210,7 +210,6 @@ const updateManyInvoices = async (req, res) => {
     try {
 
         const updatedInvoices = await Invoice.updateMany({}, {$set:{"packed": false}})
-        console.log(updatedInvoices)
         res.json({
             message: `Invoices updated succesfully`
         })

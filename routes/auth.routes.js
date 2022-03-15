@@ -1,18 +1,10 @@
-const city = require("../controllers/city.controller");
+const auth = require("../controllers/auth.controller");
 const {Router} = require("express");
 
 const router = Router();
 
-router.post('/', city.createCity)
-
-router.get('/', city.findCity)
-
-router.put('/:id', city.updateCity)
-
-router.delete('/:id', city.deleteCity)
-
-router.post('/insertMany', city.insertManyCities)
-
+router.post('/signUp', auth.signUp)
+router.post('/signIn', auth.signIn)
 
 // export default router;
 module.exports = router;
