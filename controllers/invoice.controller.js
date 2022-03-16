@@ -139,7 +139,7 @@ const findInvoice = async (req,res) =>{
                         as: "productsInfo" 
                     } 
                 }
-            ]);
+            ]).limit(10);
         }
         res.send(invoices || [])
     } catch (error) {
@@ -170,23 +170,9 @@ const deleteInvoice = async (req, res) => {
 
 const updateInvoice = async (req, res) => {
     try {
-        const filter = !!req.query.paymentMethodId ? {
-            "_id" : req.params.id,
-            "paymentMethods._id" : req.query.paymentMethodId,
-        }
-        : {
-            "_id" : req.params.id,
-        };
-        const setData = !!req.query.payConfirmed ? { 
-            "paymentMethods.$.pay_confirmed" : req.query.payConfirmed
-        }
-        : !!req.query.reviewed && !!req.query.invoiceNumber ? { 
-            "reviewed" : req.query.reviewed,
-            "invoice_number" : req.query.invoiceNumber
-        } : {};
         const updatedInvoice = await Invoice.updateOne(
-            filter,
-            { $set: setData }
+            req.body.filter,
+            { $set: req.body.setData }
         )
 
         if (Object.keys(updatedInvoice).length === 0) {
@@ -207,11 +193,9 @@ const updateInvoice = async (req, res) => {
 
 const updateManyInvoices = async (req, res) => {
     try {
-
-        const updatedInvoices = await Invoice.updateMany({}, {$set:{"packed": false}})
-        res.json({
-            message: `Invoices updated succesfully`
-        })
+        console.log(req.body)
+        const updatedInvoices = await Invoice.updateMany(req.body.filter, {$set: req.body.setData})
+        res.json({updatedInvoices})
     } catch (error) {
         res.status(500).json({
             message: error.message || 'something went wrong updating the Invoice'

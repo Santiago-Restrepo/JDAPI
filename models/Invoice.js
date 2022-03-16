@@ -89,7 +89,11 @@ const invoiceSchema = new Schema({
     packed: {
         type: Boolean,
         default: false
-    }
+    },
+    printed: {
+        type: Boolean,
+        default: false
+    },
     
 }, {
     versionKey: false,
