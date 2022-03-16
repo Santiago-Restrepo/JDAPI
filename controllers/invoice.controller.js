@@ -88,7 +88,6 @@ const createInvoice = async (req, res) => {
     }
 }
 const findInvoice = async (req,res) =>{
-    
     try {
         const filter = !!req.query.id ?  req.query.id : '';
         let invoices;
@@ -140,7 +139,7 @@ const findInvoice = async (req,res) =>{
                         as: "productsInfo" 
                     } 
                 }
-            ]).limit(10);
+            ]);
         }
         res.send(invoices || [])
     } catch (error) {
@@ -220,4 +219,16 @@ const updateManyInvoices = async (req, res) => {
     }
 }
 
-module.exports = {createInvoice, findInvoice, updateInvoice, updateManyInvoices, deleteInvoice}
+const countInvoices = async (req, res) => {
+    try {
+
+        const count = await Invoice.find().count()
+        res.json({count})
+    } catch (error) {
+        res.status(500).json({
+            message: error.message || 'something went wrong updating the Invoice'
+        })
+    }
+}
+
+module.exports = {createInvoice, findInvoice, updateInvoice, updateManyInvoices, deleteInvoice, countInvoices}

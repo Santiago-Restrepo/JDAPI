@@ -2,18 +2,19 @@
 // import * as taskController from "../controllers/task.controller";
 const product = require("../controllers/product.controller");
 const {Router} = require("express");
+const { isAdmin, isEmployee, verifyToken } = require("../middlewares");
 
 const router = Router();
 
-router.post('/', product.createProduct)
+router.post('/',[verifyToken ,isAdmin], product.createProduct)
 
-router.get('/', product.findProduct)
+router.get('/',[verifyToken ,isEmployee] ,product.findProduct)
 
-router.put('/:id', product.updateProduct)
+router.put('/:id',[verifyToken ,isAdmin], product.updateProduct)
 
-router.delete('/:id', product.deleteProduct)
+router.delete('/:id',[verifyToken ,isAdmin], product.deleteProduct)
 
-router.post('/insertMany', product.insertManyProducts)
+router.post('/insertMany',[verifyToken ,isAdmin], product.insertManyProducts)
 
 
 // export default router;

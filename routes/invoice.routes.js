@@ -10,15 +10,17 @@ const {
 
 const router = Router();
 
-router.post('/', [verifyToken, isAdmin, isEmployee] ,invoice.createInvoice)
+router.post('/', [verifyToken, isEmployee] ,invoice.createInvoice)
 
-router.get('/', [verifyToken, isAdmin, isEmployee] ,invoice.findInvoice)
+router.get('/', [verifyToken, isEmployee] ,invoice.findInvoice)
 
-router.put('/updateMany', [verifyToken, isAdmin], invoice.updateManyInvoices)
+router.get('/count', [verifyToken, isEmployee] ,invoice.countInvoices)
 
-router.put('/:id', [verifyToken, isAdmin], invoice.updateInvoice)
+router.put('/updateMany', [verifyToken, isEmployee], invoice.updateManyInvoices)
 
-router.delete('/:id', [verifyToken, isAdmin], invoice.deleteInvoice)
+router.put('/:id', [verifyToken, isEmployee], invoice.updateInvoice)
+
+router.delete('/:id', [verifyToken, isEmployee], invoice.deleteInvoice)
 
 
 // export default router;

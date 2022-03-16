@@ -14,6 +14,7 @@ const verifyToken = async (req, res, next) =>{
         if(!user) return res.status(403).json({message: "No user found"})
         next()
     } catch (error) {
+        console.log(error)
         return res.status(401).json({message: "Unauthorized"})
     }
 }

@@ -2,18 +2,19 @@
 // import * as taskController from "../controllers/task.controller";
 const country = require("../controllers/country.controller");
 const {Router} = require("express");
+const { verifyToken, isEmployee } = require("../middlewares");
 
 const router = Router();
 
-router.post('/', country.createCountry)
+router.post('/', [verifyToken, isEmployee], country.createCountry)
 
 router.get('/', country.findCountry)
 
-router.put('/:id', country.updateCountry)
+router.put('/:id', [verifyToken, isEmployee], country.updateCountry)
 
-router.delete('/:id', country.deleteCountry)
+router.delete('/:id', [verifyToken, isEmployee], country.deleteCountry)
 
-router.post('/insertMany', country.insertManyCountries)
+router.post('/insertMany', [verifyToken, isEmployee], country.insertManyCountries)
 
 
 // export default router;
