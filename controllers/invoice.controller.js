@@ -125,6 +125,9 @@ const findInvoice = async (req,res) =>{
                     $lookup: { from: "assesors", localField: "assesor", foreignField: "_id", as: "assesor" } 
                 },
                 { 
+                    $lookup: { from: "carriers", localField: "carrier", foreignField: "_id", as: "carrier" } 
+                },
+                { 
                     $lookup: {
                         from: "paymentmethods", 
                         localField: "paymentMethods.id", 

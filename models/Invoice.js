@@ -94,6 +94,10 @@ const invoiceSchema = new Schema({
         type: Boolean,
         default: false
     },
+    fileGenerated: {
+        type: Boolean,
+        default: false
+    },
     
 }, {
     versionKey: false,
