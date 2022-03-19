@@ -75,7 +75,6 @@ const createInvoice = async (req, res) => {
                 campaign,
                 complementary_strategy,
                 source,
-                invoice_number: sequential,
                 sequential
             });
             const savedInvoice = await newInvoice.save();
@@ -92,7 +91,7 @@ const findInvoice = async (req,res) =>{
         const filter = !!req.query.id ?  req.query.id : '';
         let invoices;
         if (!!filter) {
-            invoices =  await Invoice.findById(filter);
+            invoices =  await Invoice.findById(filter).populate('client');
         } else {
             invoices =  await Invoice.aggregate([
                 { 
@@ -149,6 +148,7 @@ const findInvoice = async (req,res) =>{
         res.status(500).json({
             message: error.message || 'something went wrong retrieving the Invoices'
         })
+        console.error(error)
     }
 }
 const deleteInvoice = async (req, res) => {

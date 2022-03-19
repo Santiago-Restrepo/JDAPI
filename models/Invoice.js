@@ -76,7 +76,9 @@ const invoiceSchema = new Schema({
     invoice_number : {
         unique: true,
         type: String,
+        default: null,
         trim: true,
+        sparse: true
     },
     sequential : {
         unique: true,
