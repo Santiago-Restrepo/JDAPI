@@ -84,6 +84,10 @@ const invoiceSchema = new Schema({
         unique: true,
         type: Number,
     },
+    active: {
+        type: Boolean,
+        default: true
+    },
     reviewed: {
         type: Boolean,
         default: false

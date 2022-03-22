@@ -88,11 +88,28 @@ const createInvoice = async (req, res) => {
 }
 const findInvoice = async (req,res) =>{
     try {
-        const filter = !!req.query.id ?  req.query.id : '';
+        const id = !!req.query.id ?  req.query.id : '';
+        let limit = !!req.query.limit &&  parseInt(req.query.limit);
+        let filter = !!req.body.filter ? req.body.filter : {}
+        console.log(limit)
+        if (!req.query.limit) {
+            const count = await Invoice.find().count();
+            limit = count;
+        }
         let invoices;
-        if (!!filter) {
-            invoices =  await Invoice.findById(filter).populate('client');
+        if (!!id) {
+            invoices =  await Invoice.findById(id).populate('client').populate({
+                path: 'products',
+                populate: { path: 'id' }
+            });
         } else {
+            // invoices = await Invoice.find().populate('client').populate({
+            //     path: 'client',
+            //     populate: {path: 'country'}
+            // }).populate({
+            //     path: 'client',
+            //     populate: {path: 'city'}
+            // })
             invoices =  await Invoice.aggregate([
                 { 
                     $lookup: { 
@@ -141,7 +158,8 @@ const findInvoice = async (req,res) =>{
                         as: "productsInfo" 
                     } 
                 }
-            ]).limit(10);
+            ]).limit(limit);
+            // ]).match({ "paymentMethods.$.pay_confirmed": true }).limit(limit);
         }
         res.send(invoices || [])
     } catch (error) {
@@ -173,9 +191,18 @@ const deleteInvoice = async (req, res) => {
 
 const updateInvoice = async (req, res) => {
     try {
+
+        const setData = req.body.setData;
+        const client = {...setData.client};
+        const clientId = setData.clientId
+        if(client){
+            const updatedClient = await Client.findByIdAndUpdate(clientId, client);
+        }
+        delete setData.client;
+        delete setData.clientId;
         const updatedInvoice = await Invoice.updateOne(
             req.body.filter,
-            { $set: req.body.setData }
+            { $set: setData }
         )
 
         if (Object.keys(updatedInvoice).length === 0) {
@@ -184,7 +211,7 @@ const updateInvoice = async (req, res) => {
             }) 
         } else {
             res.json({
-                message: `Invoice ${req.params.id} was updated succesfully`
+                message: `Invoice ${req.params.id} ${client ? ` and client ${clientId} were` : "was" } updated succesfully`
             })
         }
     } catch (error) {
@@ -196,7 +223,6 @@ const updateInvoice = async (req, res) => {
 
 const updateManyInvoices = async (req, res) => {
     try {
-        console.log(req.body)
         const updatedInvoices = await Invoice.updateMany(req.body.filter, {$set: req.body.setData})
         res.json({updatedInvoices})
     } catch (error) {
