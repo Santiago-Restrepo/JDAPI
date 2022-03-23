@@ -90,8 +90,15 @@ const findInvoice = async (req,res) =>{
     try {
         const id = !!req.query.id ?  req.query.id : '';
         let limit = !!req.query.limit &&  parseInt(req.query.limit);
-        let filter = !!req.body.filter ? req.body.filter : {}
-        console.log(limit)
+        let date;
+        console.log(req.query)
+        if (!!req.query.from && !!req.query.to) {
+            date = {
+                from: new Date(req.query.from),
+                to: new Date(req.query.to),
+            }
+        }
+        console.log(date)
         if (!req.query.limit) {
             const count = await Invoice.find().count();
             limit = count;
@@ -158,8 +165,12 @@ const findInvoice = async (req,res) =>{
                         as: "productsInfo" 
                     } 
                 }
-            ]).limit(limit);
-            // ]).match({ "paymentMethods.$.pay_confirmed": true }).limit(limit);
+            // ]).limit(limit);
+            // ]).match({ "paymentMethods": { $all: [{ $elemMatch: {pay_confirmed: true} }] } }).limit(limit);
+            ]).match({ "sell_date": {
+                $gte: date.from,
+                $lte: date.to,
+            } }).limit(limit);
         }
         res.send(invoices || [])
     } catch (error) {
