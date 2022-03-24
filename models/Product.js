@@ -8,7 +8,8 @@ const productSchema = new Schema({
     sku : {
         type: String,
         trim: true,
-        unique: true
+        unique: true,
+        required: true
     },
     name : {
         type: String,

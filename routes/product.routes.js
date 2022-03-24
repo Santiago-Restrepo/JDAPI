@@ -1,5 +1,3 @@
-// import {Router} from "express";
-// import * as taskController from "../controllers/task.controller";
 const product = require("../controllers/product.controller");
 const {Router} = require("express");
 const { isAdmin, isEmployee, verifyToken } = require("../middlewares");

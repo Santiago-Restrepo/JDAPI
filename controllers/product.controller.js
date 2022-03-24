@@ -3,18 +3,13 @@ const Product = require("../models/Product")
 const { default: mongoose } = require("mongoose")
 
 const createProduct = async (req, res) => {
-    const {
-        name
-    } = req.body
-    
+    let data = req.body.data;    
     try {
-        
-        const newProduct = new Product({
-            name 
-        });
+        const newProduct = new Product(data);
         const savedProduct = await newProduct.save();
         res.json(savedProduct)
     } catch (error) {
+        console.error(error)
         res.status(500).json({
             message: error.message || 'something went wrong creating a Product'
         })
@@ -86,18 +81,23 @@ const deleteProduct = async (req, res) => {
     }
 }
 
+
 const updateProduct = async (req, res) => {
     try {
-        const {id} = req.params;
-        const filter = req.body || {};
-        const updatedProduct = await Product.findByIdAndUpdate(req.params.id, filter) || {};
+
+        const setData = req.body.setData;
+        const updatedProduct = await Product.updateOne(
+            req.body.filter,
+            { $set: setData }
+        )
+
         if (Object.keys(updatedProduct).length === 0) {
             res.status(400).json({
                 message: `Product with id ${id} doesn't exist, nothing updated`
             }) 
         } else {
             res.json({
-                message: `Product ${updatedProduct._id} was updated succesfully`
+                message: `Product ${req.params.id} was updated succesfully`
             })
         }
     } catch (error) {

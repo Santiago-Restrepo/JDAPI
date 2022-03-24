@@ -21,7 +21,7 @@ const createInvoice = async (req, res) => {
         campaign,
         complementary_strategy,
         source,
-        sequential
+        // sequential
     } = req.body
     if (!!!client) {
         res.status(400).json({
@@ -29,6 +29,8 @@ const createInvoice = async (req, res) => {
         })
     }else{
         try {
+
+            const {sequential} = await Invoice.findOne({},{"sequential":1, _id:0}).sort({sequential: -1}).limit(1)
             const newClient = new Client({
                 document: client.document,
                 name: client.name,
@@ -58,8 +60,6 @@ const createInvoice = async (req, res) => {
                     city: client.city_id,
                 })
             }
-            
-            
             const newInvoice = new Invoice({
                 assesor: assesor_id,
                 client: savedNewClient.id,
@@ -75,7 +75,7 @@ const createInvoice = async (req, res) => {
                 campaign,
                 complementary_strategy,
                 source,
-                sequential
+                sequential: sequential + 1
             });
             const savedInvoice = await newInvoice.save();
             res.json(savedInvoice)
