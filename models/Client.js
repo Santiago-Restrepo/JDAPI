@@ -37,3 +37,4 @@ const clientSchema = new Schema({
     timestamps: true
 });
 module.exports = model('Client', clientSchema);
+module.exports.clientSchema = clientSchema

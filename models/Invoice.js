@@ -1,12 +1,13 @@
 // import {Schema, model} from 'mongoose'
 const {Schema, model} = require("mongoose");
+const {clientSchema} = require("./Client")
 
 const invoiceSchema = new Schema({
     sell_date : {
         type: Date,
         trim: true,
     },
-    client: { type: Schema.Types.ObjectId, ref: 'Client'},
+    client: clientSchema,
     close_chanel : {
         type: String,
         trim: true,

@@ -62,7 +62,7 @@ const createInvoice = async (req, res) => {
             }
             const newInvoice = new Invoice({
                 assesor: assesor_id,
-                client: savedNewClient.id,
+                client: savedNewClient,
                 close_chanel,
                 sell_date,
                 priority,
