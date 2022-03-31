@@ -10,12 +10,12 @@ const createInvoice = async (req, res) => {
         sell_date,
         close_chanel,
         client,
-        assesor_id,
+        assesor,
         priority,
         products,
         shipping_value,
         paymentMethods,
-        carrier_id,
+        carrier,
         shipping_restrictions,
         gifts,
         campaign,
@@ -29,8 +29,9 @@ const createInvoice = async (req, res) => {
         })
     }else{
         try {
+            
+            // let {sequential} = await Invoice.findOne({},{"sequential":1, _id:0}).sort({sequential: -1}).limit(1)
 
-            const {sequential} = await Invoice.findOne({},{"sequential":1, _id:0}).sort({sequential: -1}).limit(1)
             const newClient = new Client({
                 document: client.document,
                 name: client.name,
@@ -61,23 +62,39 @@ const createInvoice = async (req, res) => {
                 })
             }
             const newInvoice = new Invoice({
-                assesor: assesor_id,
+                assesor,
                 client: savedNewClient,
                 close_chanel,
                 sell_date,
                 priority,
                 shipping_restrictions,
-                carrier: carrier_id,
+                carrier,
                 shipping_value,
                 products,
                 paymentMethods,
                 gifts,
                 campaign,
                 complementary_strategy,
-                source,
-                sequential: sequential + 1
+                source
             });
             const savedInvoice = await newInvoice.save();
+
+            var entitySchema = mongoose.Schema({
+                sort: {type: String}
+            });
+            
+            entitySchema.pre('save', function(next) {
+                var doc = this;
+                Invoice.findByIdAndUpdateAsync({_id: savedInvoice._id}, {$inc: { sequential: 1} }, {new: true, upsert: true}).then(function(count) {
+                    console.log("...count: "+JSON.stringify(count));
+                    doc.sort = count.seq;
+                    next();
+                })
+                .catch(function(error) {
+                    console.error("counter error-> : "+error);
+                    throw error;
+                });
+            });
             res.json(savedInvoice)
         } catch (error) {
             res.status(500).json({

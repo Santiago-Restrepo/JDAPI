@@ -9,3 +9,4 @@ const paymentMethodSchema = new Schema({
     versionKey: false,
 });
 module.exports = model('PaymentMethod', paymentMethodSchema);
+module.exports.paymentMethodSchema = paymentMethodSchema;

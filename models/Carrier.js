@@ -10,3 +10,4 @@ const carrierSchema = new Schema({
 });
 // export default model('Task', carrierSchema);
 module.exports = model('Carrier', carrierSchema);
+module.exports.carrierSchema = carrierSchema;

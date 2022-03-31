@@ -1,6 +1,10 @@
 // import {Schema, model} from 'mongoose'
 const {Schema, model} = require("mongoose");
-const {clientSchema} = require("./Client")
+const {clientSchema} = require("./Client");
+const {assesorSchema} = require("./Assesor");
+const {productSchema} = require("./Product");
+const {paymentMethodSchema} = require("./PaymentMethod");
+const {carrierSchema} = require("./Carrier");
 
 const invoiceSchema = new Schema({
     sell_date : {
@@ -12,7 +16,7 @@ const invoiceSchema = new Schema({
         type: String,
         trim: true,
     },
-    assesor: {type: Schema.Types.ObjectId, ref: 'Assesor'},
+    assesor: assesorSchema,
     priority : {
         type: String,
         trim: true,
@@ -20,24 +24,18 @@ const invoiceSchema = new Schema({
     products : [
         {
             //Organizar entidad producto dentro de invoice
-            id : {
-                type: Schema.Types.ObjectId, 
-                ref: 'Product',
-            },
-            finalPrice: Number,
+            data: productSchema,
+            final_price: Number,
             quantity: Number,
             _id: false
-        }],
+        }
+    ],
     shipping_value : {
         type: Number,
     },
     paymentMethods : [
         { 
-            id: {
-                type: Schema.Types.ObjectId, 
-                ref: 'PaymentMethod', 
-                required: true
-            },
+            data: paymentMethodSchema,
             value: {
                 type: Number
             },
@@ -50,13 +48,13 @@ const invoiceSchema = new Schema({
             },
         }
     ],
-    carrier :  {type: Schema.Types.ObjectId, ref: 'Carrier'},
+    carrier :  carrierSchema,
     shipping_restrictions : {
         type: String,
         trim: true,
     },
     gifts : [{
-        id: { type: Schema.Types.ObjectId, ref: 'Product' },
+        data: productSchema,
         _id: false
     }],
     campaign : {
@@ -82,8 +80,8 @@ const invoiceSchema = new Schema({
         sparse: true
     },
     sequential : {
-        unique: true,
         type: Number,
+        default: 0,
     },
     active: {
         type: Boolean,

@@ -10,3 +10,4 @@ const assesorSchema = new Schema({
 });
 // export default model('Task', assesorSchema);
 module.exports = model('Assesor', assesorSchema);
+module.exports.assesorSchema = assesorSchema;
